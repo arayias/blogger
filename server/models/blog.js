@@ -22,4 +22,5 @@ blogSchema.virtual("url").get(function () {
 });
 
 const Blog = model("Blog", blogSchema);
+
 export default Blog;
