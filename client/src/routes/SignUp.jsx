@@ -36,6 +36,7 @@ export default function SignUp() {
             className="p-2 m-2 border-2 border-gray-300 rounded-md"
             type="text"
             id="username"
+            name="username"
             {...register("username", {
               required: true,
               maxLength: 20,
@@ -59,6 +60,7 @@ export default function SignUp() {
             className="p-2 m-2 border-2 border-gray-300 rounded-md"
             type="password"
             id="password"
+            name="password"
             {...register("password", {
               required: true,
               maxLength: 20,

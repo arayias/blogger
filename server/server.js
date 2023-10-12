@@ -4,10 +4,22 @@ import blogsRouter from "./routes/blogs.js";
 import usersRouter from "./routes/users.js";
 import sessionRouter from "./routes/session.js";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
+import passport from "passport";
+import { passportConfig } from "./passport.js";
+
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+app.use(passport.initialize());
+passportConfig(passport);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

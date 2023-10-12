@@ -1,18 +1,14 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
+import {
+  sessionLogin,
+  sessionLogout,
+} from "../controllers/sessionController.js";
 
 const router = express.Router();
 
-router.post(
-  "/login",
-  asyncHandler(async (req, res) => {
-    res.json({ message: "Login successful" });
-  })
-);
+router.post("/login", sessionLogin);
 
-router.delete(
-  "/logout",
-  asyncHandler(async (req, res) => {})
-);
+router.delete("/logout", sessionLogout);
 
 export default router;
