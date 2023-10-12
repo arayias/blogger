@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 export default function SignUp() {
   const {
@@ -7,6 +8,9 @@ export default function SignUp() {
     formState: { errors },
     getValues,
   } = useForm();
+
+  const [errorMessage, setErrorMessage] = useState("");
+
   const onSubmit = async (data) => {
     if (errors.username || errors.password || errors.confirmedPassword) {
       return;

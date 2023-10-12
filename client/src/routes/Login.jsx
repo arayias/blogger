@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../components/AuthProvider";
+import axios from "axios";
 
 export default function Login() {
   const {
@@ -10,38 +12,47 @@ export default function Login() {
   } = useForm();
 
   const navigate = useNavigate();
-
-  const [errorMessage, setErrorMessage] = useState("");
+  const { user, setUser } = useUser();
+  console.log(user);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  let prevData;
 
   const onSubmit = async (data) => {
-    if (errors.username || errors.password) {
+    if (errors.username || errors.password || prevData == data) {
       return;
     }
-    console.log(data);
-    const response = await fetch("api/session/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-      redirect: "follow",
-    });
-    if (response.status === 401 || response.status === 400) {
-      setErrorMessage("Invalid username or password");
-      return;
+    prevData = data;
+    setLoading(true);
+    try {
+      const response = await axios.post("api/session/login", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+      });
+      console.log(response);
+      if (response.status === 401 || response.status === 400) {
+        setError("Invalid username or password");
+        return;
+      }
+      setError(null);
+      setUser(response.data);
+      localStorage.setItem("token", response.data);
+      navigate("/");
+      setLoading(false);
+    } catch {
+      setError("Invalid username or password");
+      setLoading(false);
     }
-    setErrorMessage("");
-
-    const result = await response.json();
-    localStorage.setItem("token", result.token);
-    console.log(result);
-    navigate("/");
   };
   return (
     <div id="login" className="flex flex-col items-center content-center mt-5">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center p-2 rounded-md shadow-md bg-slate-50"
+        className={`flex flex-col items-center p-2 rounded-md shadow-md bg-slate-50 ${
+          loading ? "animate-pulse" : ""
+        }`}
       >
         <label className="flex flex-col items-left min-w[1/2]">
           <span className="mx-2 mt-1 font-semibold">Username</span>
@@ -69,12 +80,15 @@ export default function Login() {
             })}
           />
         </label>
-        {errorMessage != "" && (
-          <span className="text-red-500 max-w-[20ch]">{errorMessage}</span>
+        {error != null && (
+          <span className="text-red-500 max-w-[20ch]">{error}</span>
         )}
         <button
           type="submit"
-          className="p-2 m-2 transition duration-300 ease-in-out border-2 border-gray-300 rounded-md hover:bg-gray-300"
+          className={`p-2 m-2 transition duration-300 ease-in-out border-2 border-gray-300 rounded-md hover:bg-gray-300 ${
+            loading ? "cursor-not-allowed" : ""
+          }`}
+          disabled={loading}
         >
           Login
         </button>

@@ -1,16 +1,19 @@
 import jsonwebtoken from "jsonwebtoken";
 import passport from "passport";
 import dotenv from "dotenv";
+import expressAsyncHandler from "express-async-handler";
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const sessionLogout = (req, res, next) => {
-  res.json(req.body);
-};
+const sessionLogout = expressAsyncHandler(async (req, res, next) => {
+  console.log("logging out");
+  res.json({ message: "Logged out successfully" });
+});
 
 const sessionLogin = (req, res, next) => {
   passport.authenticate("local", { session: false }, (err, user, info) => {
+    console.log("sessionLogin", err, user, info);
     if (err || !user) {
       console.log(err);
       return res.status(400).json({
