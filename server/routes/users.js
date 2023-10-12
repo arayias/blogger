@@ -1,16 +1,10 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
-import Blog from "../models/blog.js";
 import User from "../models/user.js";
+import { createUser } from "../controllers/userController.js";
 
 const router = express.Router();
 
-router.get(
-  "/",
-  asyncHandler(async (req, res) => {
-    const users = await User.find({});
-    res.json(users);
-  })
-);
+router.post("/", createUser);
 
 export default router;

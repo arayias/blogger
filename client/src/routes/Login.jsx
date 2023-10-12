@@ -1,8 +1,8 @@
 export default function Login() {
   return (
-    <div id="login" className="flex flex-col items-center content-center">
+    <div id="login" className="flex flex-col items-center content-center mt-5">
       <form
-        action="/login"
+        action="/api/session/login"
         method="POST"
         className="flex flex-col items-center p-2 rounded-md shadow-md bg-slate-50"
       >

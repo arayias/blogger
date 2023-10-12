@@ -12,6 +12,11 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url} ${new Date()}`);
+  next();
+});
+
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/session", sessionRouter);

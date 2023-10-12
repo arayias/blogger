@@ -7,6 +7,7 @@ const getAllBlogs = asyncHandler(async (req, res) => {
   res.json({ message: "Blogs found" });
 });
 const createBlog = asyncHandler(async (req, res) => {
+  console.log("create blog called");
   res.json({ message: "Blog created" });
 });
 const deleteBlogById = asyncHandler(async (req, res) => {
