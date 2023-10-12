@@ -1,5 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../components/AuthProvider";
+import axios from "axios";
 
 export default function SignUp() {
   const {
@@ -9,23 +12,36 @@ export default function SignUp() {
     getValues,
   } = useForm();
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+  const { userLogin } = useUser();
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
     if (errors.username || errors.password || errors.confirmedPassword) {
       return;
     }
-    console.log(data);
-    const response = await fetch("api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...data, confirmedPassword: undefined }),
-      redirect: "follow",
-    });
-    const result = await response.json();
-    console.log(result);
+    setLoading(true);
+    try {
+      const response = await axios.post("api/users", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+      });
+      if (response.statusText != "OK" || response.data.errors) {
+        setError("Error when creating user try an alternative username");
+        return;
+      }
+      setError(null);
+      userLogin(response.data);
+      setLoading(false);
+      navigate("/");
+    } catch (err) {
+      setError("A fetching error occurred");
+      console.log(err);
+      setLoading(false);
+    }
   };
 
   return (
@@ -111,9 +127,16 @@ export default function SignUp() {
             </span>
           )}
         </label>
+        {error != null && (
+          <span className="text-red-500 max-w-[20ch]">{error}</span>
+        )}
+
         <button
           type="submit"
-          className="p-2 m-2 transition duration-300 ease-in-out border-2 border-gray-300 rounded-md hover:bg-green-400"
+          className={`p-2 m-2 transition duration-300 ease-in-out border-2 border-gray-300 rounded-md hover:bg-green-400 ${
+            loading ? "cursor-not-allowed" : ""
+          }`}
+          disabled={loading}
         >
           Sign-Up
         </button>

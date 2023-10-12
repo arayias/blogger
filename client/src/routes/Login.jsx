@@ -12,8 +12,7 @@ export default function Login() {
   } = useForm();
 
   const navigate = useNavigate();
-  const { user, setUser } = useUser();
-  console.log(user);
+  const { userLogin } = useUser();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   let prevData;
@@ -31,14 +30,12 @@ export default function Login() {
         },
         redirect: "follow",
       });
-      console.log(response);
       if (response.status === 401 || response.status === 400) {
         setError("Invalid username or password");
         return;
       }
       setError(null);
-      setUser(response.data);
-      localStorage.setItem("token", response.data);
+      userLogin(response.data);
       navigate("/");
       setLoading(false);
     } catch {

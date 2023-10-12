@@ -27,6 +27,11 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const userLogin = async (data) => {
+    setUser(data);
+    localStorage.setItem("token", data);
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -35,7 +40,7 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, userLogout }}>
+    <UserContext.Provider value={{ user, setUser, userLogout, userLogin }}>
       {children}
     </UserContext.Provider>
   );

@@ -6,7 +6,7 @@ export default function Nav() {
   return (
     <>
       <nav>
-        <ul className="flex flex-row p-2 text-white bg-gray-800 shadow-2xl">
+        <ul className="flex flex-row p-4 text-white bg-gray-800 shadow-md shadow-slate-800">
           <Link className="mr-auto" to="/">
             Home
           </Link>
