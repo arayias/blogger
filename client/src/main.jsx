@@ -8,6 +8,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Blogs from "./routes/Blogs.jsx";
 import IndividualBlog from "./routes/IndividualBlog.jsx";
+import Profile from "./routes/Profile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "blogs/:id",
         element: <IndividualBlog />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
       },
     ],
     // children: [

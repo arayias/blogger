@@ -23,7 +23,7 @@ export default function IndividualBlog() {
 
   return (
     <>
-      <div className="w-[80%] mt-3 center mx-auto">
+      <div className="w-[65%] mt-3 center mx-auto">
         {blog ? (
           <>
             <img
