@@ -7,6 +7,7 @@ import SignUp from "./routes/SignUp.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Blogs from "./routes/Blogs.jsx";
+import IndividualBlog from "./routes/IndividualBlog.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignUp />,
+      },
+      {
+        path: "blogs/:id",
+        element: <IndividualBlog />,
       },
     ],
     // children: [

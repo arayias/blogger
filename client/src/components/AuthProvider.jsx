@@ -29,13 +29,17 @@ export const UserProvider = ({ children }) => {
 
   const userLogin = async (data) => {
     setUser(data);
-    localStorage.setItem("token", data);
+    localStorage.setItem("token", JSON.stringify(data));
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = JSON.parse(localStorage.getItem("token"));
+
     if (token) {
+      console.debug("setting user from local storage");
       setUser(token);
+    } else {
+      console.debug("no token found in local storage");
     }
   }, []);
 

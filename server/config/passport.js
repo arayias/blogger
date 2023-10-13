@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import User from "./models/user.js";
+import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 dotenv.config();
@@ -44,15 +44,15 @@ function passportConfig(passport) {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: process.env.JWT_SECRET,
       },
-      function (jwtPayload, cb) {
+      async function (jwtPayload, cb) {
+        console.log(jwtPayload);
         //find the user in db if needed
-        return User.findOneById(jwtPayload.id)
-          .then((user) => {
-            return cb(null, user);
-          })
-          .catch((err) => {
-            return cb(err);
-          });
+        try {
+          const user = await User.findById(jwtPayload.user._id);
+          return cb(null, user);
+        } catch (err) {
+          return cb(err);
+        }
       }
     )
   );

@@ -31,6 +31,7 @@ export default function SignUp() {
       });
       if (response.statusText != "OK" || response.data.errors) {
         setError("Error when creating user try an alternative username");
+        setLoading(false);
         return;
       }
       setError(null);

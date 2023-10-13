@@ -4,10 +4,12 @@ import { UserProvider } from "./components/AuthProvider";
 
 export default function App() {
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <UserProvider>
-        <Nav />
-        <Outlet />
+        <div className="min-w-[100vw] min-h-screen">
+          <Nav />
+          <Outlet />
+        </div>
       </UserProvider>
     </div>
   );

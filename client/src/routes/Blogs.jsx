@@ -1,15 +1,32 @@
+import { useState } from "react";
+import BlogEdit from "../components/BlogEdit";
+import { useUser } from "../components/AuthProvider";
+import BlogCards from "../components/BlogCards";
 export default function Blogs() {
+  const [isEditing, setIsEditing] = useState(false);
+  const { user } = useUser();
+
   return (
-    <div id="blog-view" className="grid grid-cols-4 gap-4 p-4 mt-2 ">
-      <div className="flex flex-col p-4 rounded-md shadow-md ">
-        <img
-          className="object-cover w-full rounded-md h-36"
-          src="https://images.unsplash.com/photo-1694930103616-52043332f156?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5NzE1NDA0Nw&ixlib=rb-4.0.3&q=80&w=1080"
-          alt="blog"
-        />
-        <h1 className="text-xl font-semibold">Blog Title</h1>
-        <p className="text-sm">Blog short description should be truncated</p>
-        <p className="text-sm italic">Blog Author</p>
+    <div id="blog-view" className={`relative p-4 mt-2 overflow-x-hidden`}>
+      {user ? (
+        <div
+          onClick={() => {
+            setIsEditing(!isEditing);
+          }}
+          className={`absolute top-0 z-10 p-2 tex t-sm text-white bg-gray-800 rounded-full w-10 h-10 shadow-md cursor-pointer aspect-square right-5 hover:bg-gray-700 flex items-center justify-center align-middle transform transition duration-300 ease-in-out origin-center
+          ${isEditing ? "rotate-[-45deg]" : ""} `}
+        >
+          +
+        </div>
+      ) : null}
+
+      {isEditing ? <BlogEdit /> : null}
+      <div
+        className={`relative grid grid-cols-4 gap-4 p-4 mt-2 ${
+          isEditing ? "filter blur-sm pointer-events-none" : ""
+        } overflow-x-hidden`}
+      >
+        <BlogCards />
       </div>
     </div>
   );

@@ -6,8 +6,8 @@ import sessionRouter from "./routes/session.js";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import passport from "passport";
-import { passportConfig } from "./passport.js";
-
+import logger from "./middleware/logger.js";
+import { passportConfig } from "./config/passport.js";
 dotenv.config();
 
 const app = express();
@@ -21,21 +21,14 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.use(passport.initialize());
 passportConfig(passport);
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: "52428800" }));
+app.use(express.urlencoded({ extended: false, limit: "52428800" }));
 
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url} ${new Date()}`);
-  next();
-});
+app.use(logger);
 
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/session", sessionRouter);
-
-app.get("/api", (req, res) => {
-  res.json({ count: 25 });
-});
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);

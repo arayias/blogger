@@ -2,6 +2,11 @@ import asyncHandler from "express-async-handler";
 import User from "../models/user.js";
 import { body, validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
+import jsonwebtoken from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const createUser = [
   body("username")
@@ -30,7 +35,9 @@ const createUser = [
         username: req.body.username,
         passwordHash: hashedPassword,
       });
-      res.json({ message: "User created" });
+      const token = jsonwebtoken.sign({ user }, JWT_SECRET);
+
+      return res.json({ user, token });
     });
   }),
 ];

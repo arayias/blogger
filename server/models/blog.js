@@ -10,10 +10,23 @@ const blogSchema = new Schema({
     type: String,
     required: true,
   },
+  image: {
+    type: String,
+    required: false,
+    trim: true,
+  },
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
+  },
+  created: {
+    type: Date,
+    default: Date.now,
+  },
+  edited: {
+    type: Date,
+    default: Date.now,
   },
 });
 
