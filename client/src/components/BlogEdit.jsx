@@ -56,8 +56,8 @@ export default function BlogEdit() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center justify-around min-h-[70vh] absolute top-[5%] left-[30%] right-[70%] bottom-0
-        bg-slate-50 rounded-md shadow-md z-10 min-w-[40%] overflow-auto"
+        className="flex flex-col items-center justify-around min-h-[70vh] absolute top-[5%] left-[30%] right-[70%] bottom-[95%]
+        bg-slate-50 rounded-md shadow-md z-10 min-w-[40%] overflow-auto outline-slate-400 outline"
         id="blog-edit"
       >
         <h1 className="text-xl font-semibold">Create Blog</h1>
@@ -112,7 +112,7 @@ export default function BlogEdit() {
             </span>
           </label>
           <textarea
-            className="p-2 m-2 border-2 border-gray-300 rounded-md resize-none max-h-36"
+            className="p-2 m-2 border-2 border-gray-300 rounded-md resize-none w-72 max-h-36"
             type="text"
             name="content"
             id="content"
