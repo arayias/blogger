@@ -14,13 +14,14 @@ const createComment = [
   passport.authenticate("jwt", { session: false }),
   body("comment", "comment must not be empty")
     .trim()
-    .isLength({ min: 1 })
+    .isLength({ min: 1, max: 100 })
     .escape(),
   asyncHandler(async (req, res) => {
     console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors });
+      console.log(errors);
+      return res.json({ errors: errors.array() });
     }
 
     const comment = new Comment({

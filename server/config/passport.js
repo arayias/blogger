@@ -25,7 +25,7 @@ function passportConfig(passport) {
             }
             const match = bcrypt.compareSync(password, user.passwordHash);
             if (!match) {
-              console.log("incorrect email or password");
+              console.log("Incorrect email or password");
               return cb(null, false, {
                 message: "Incorrect email or password.",
               });

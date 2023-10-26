@@ -2,10 +2,12 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useUser } from "../components/AuthProvider";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function CommentForm() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -19,8 +21,8 @@ export default function CommentForm() {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
-    console.log(data);
     if (errors.comment) {
+      setError("Comment must be between 1 and 100 characters");
       return;
     }
     setLoading(true);
@@ -31,8 +33,16 @@ export default function CommentForm() {
           Authorization: `Bearer ${user.token}`,
         },
       });
+      console.log(res.data.errors);
       console.log(res.data);
+      if (res.statusText != "OK" || res.data.errors) {
+        setError(res.data.errors);
+        setLoading(false);
+        return;
+      }
+
       setLoading(false);
+      navigate(0);
     } catch (err) {
       setError("A fetching error occurred");
       console.log(err);
@@ -53,6 +63,7 @@ export default function CommentForm() {
           maxLength: 100,
         })}
       ></textarea>
+      <p>{errors.comment && "Comment must be between 1 and 100 characters"}</p>
       <button
         className="p-2 mt-2 border-2 border-gray-300 rounded-md"
         disabled={loading}
