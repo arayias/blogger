@@ -1,6 +1,4 @@
 import express from "express";
-import asyncHandler from "express-async-handler";
-import Blog from "../models/blog.js";
 import {
   getAllBlogs,
   createBlog,

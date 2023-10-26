@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import CommentForm from "../components/CommentForm";
 import axios from "axios";
+import { useUser } from "../components/AuthProvider";
 
 export default function IndividualBlog() {
+  const { user } = useUser();
   const { id } = useParams();
   const [blog, setBlog] = useState(null);
   const [comments, setComments] = useState([]);
@@ -19,6 +21,19 @@ export default function IndividualBlog() {
         console.log(err);
       });
     // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`/api/comments/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        setComments(res.data);
+        console.log(comments);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (
@@ -44,18 +59,21 @@ export default function IndividualBlog() {
               <h1 className="text-2xl font-semibold">Comments</h1>
               {comments.length == 0 ? (
                 <>
-                  <p>Be the first to add a comment!</p>
+                  {user ? (
+                    <p>Be the first to add a comment!</p>
+                  ) : (
+                    <p>Please login to allow for commenting!</p>
+                  )}
                 </>
               ) : (
                 comments.map((comment) => (
-                  <div key={comment._id} className="mt-5">
-                    <p className="text-sm italic">{comment.author.username}</p>
-                    <p className="text-sm">{comment.contents}</p>
+                  <div key={comment._id} className="mt-5 border-b-2">
+                    <p className="text-base bold">{comment.author.username}</p>
+                    <p className="text-sm">{comment.content}</p>
                   </div>
                 ))
               )}
-
-              <CommentForm />
+              {user && <CommentForm />}
             </div>
           </>
         ) : (

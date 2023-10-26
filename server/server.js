@@ -2,6 +2,7 @@ import express from "express";
 import asyncHandler from "express-async-handler";
 import blogsRouter from "./routes/blogs.js";
 import usersRouter from "./routes/users.js";
+import commentsRouter from "./routes/comments.js";
 import sessionRouter from "./routes/session.js";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
@@ -29,6 +30,7 @@ app.use(logger);
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/session", sessionRouter);
+app.use("/api/comments", commentsRouter);
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
